@@ -11,8 +11,8 @@ FIELDS = (
 def validate_interval(start, end):
     first, last = date.fromisoformat(start), date.fromisoformat(end)
     days = (last - first).days
-    if not 1 <= days <= 31:
-        raise ValueError('Choose a date interval between 1 and 31 days; end is exclusive.')
+    if days < 1:
+        raise ValueError('End date must be after start date; end is exclusive.')
     return f'{first.isoformat()}_{last.isoformat()}'
 
 

@@ -8,13 +8,22 @@ class DomainTests(unittest.TestCase):
         self.assertIn(">= '2023-01-01T00:00:00'", query)
         self.assertIn("< '2023-01-02T00:00:00'", query)
 
-    def test_invalid_and_excessive_intervals(self):
+    def test_invalid_intervals(self):
         for start, end in [('2023-01-02', '2023-01-01'),
                            ('2023-01-01', '2023-01-01'),
-                           ('2023-01-01', '2023-03-01'),
+                           ('2023-02-30', '2023-03-01'),
                            ('not-a-date', '2023-01-02')]:
             with self.subTest(start=start, end=end), self.assertRaises(ValueError):
                 validate_interval(start, end)
+
+    def test_three_month_intervals_are_supported(self):
+        self.assertEqual(validate_interval('2023-01-01', '2023-04-01'),
+                         '2023-01-01_2023-04-01')
+        self.assertEqual(validate_interval('2024-01-01', '2024-04-01'),
+                         '2024-01-01_2024-04-01')
+        query = where_clause('2023-01-01', '2023-04-01')
+        self.assertIn(">= '2023-01-01T00:00:00'", query)
+        self.assertIn("< '2023-04-01T00:00:00'", query)
 
     def test_header_normalization(self):
         self.assertEqual(normalized_header('Trip Start Timestamp'), 'trip_start_timestamp')
