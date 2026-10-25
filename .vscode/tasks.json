@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Taxi: start services",
+      "type": "shell",
+      "command": "docker compose up -d --build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Taxi: run tests",
+      "type": "shell",
+      "command": "docker compose run --rm --no-deps --entrypoint /opt/pipeline-env/bin/python report -m unittest discover -s /opt/project/tests -v",
+      "problemMatcher": []
+    },
+    {
+      "label": "Taxi: show status",
+      "type": "shell",
+      "command": "docker compose ps -a",
+      "problemMatcher": []
+    },
+    {
+      "label": "Taxi: stop without deleting data",
+      "type": "shell",
+      "command": "docker compose stop",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+.git
+__pycache__
+*.zip
+.env
+
+.venv/
+.vscode/
+data/*.csv
+data/*.parquet
